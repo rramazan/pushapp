@@ -1,11 +1,5 @@
 <template>
     <div class="tabs">
-        <div class="tabs__link">
-            <li @click.prevent="currentButton = item" :class="{'active': item === currentButton}"
-                v-for="(item , index) in buttonList" :key="index">
-                <a href="#">{{item}}</a>
-            </li>
-        </div>
         <div class="tabs__body">
             <div class="filters">
                 <div class="filters__filter filter">
@@ -79,19 +73,16 @@
 </template>
 
 <script>
+
     export default {
         name: "ControlPanel",
         data() {
             return {
-                buttonList: ['игры', 'тинькофф'],
-                currentButton: '',
                 filterButtonActive: 0,
                 selected: ''
             }
         },
-        created() {
-            this.currentButton = this.buttonList[1];
-        }
+
     }
 </script>
 
@@ -100,99 +91,6 @@
     .tabs {
         font-family: MuseoSansCyrl-500, sans-serif;
         margin-bottom: 15px;
-
-        &__link {
-            display: flex;
-            list-style: none;
-            width: 660px;
-
-            & li {
-                display: flex;
-                position: relative;
-                text-transform: capitalize;
-            }
-
-            & a {
-                padding: 10px 25px;
-                text-decoration: none;
-                color: #979898;
-                background: #E8E8E8;
-                border-top-left-radius: 15px;
-                border-top-right-radius: 15px;
-            }
-
-            & .active {
-                z-index: 3;
-            }
-
-            & .active a {
-                background: #fff;
-                color: #1D353D;
-            }
-
-            & li:before, & li:after,
-            & li a:before, & li a:after {
-                position: absolute;
-                bottom: 0;
-            }
-
-            & li:last-child:after, & li:last-child a:after,
-            & li:first-child:before, & li:first-child a:before,
-            & .active:after, & .active:before,
-            & .active a:after, & .active a:before {
-                content: "";
-            }
-
-            & .active:before, & .active:after {
-                background: #fff;
-                color: #1D353D;
-                z-index: 1;
-            }
-
-            & li:before, & li:after {
-                background: #E8E8E8;
-                width: 10px;
-                height: 10px;
-            }
-
-            & li:before {
-                left: -10px;
-            }
-
-            & li:after {
-                right: -10px;
-            }
-
-            & li a:after, & li a:before {
-                width: 20px;
-                height: 20px;
-                border-radius: 10px;
-                background: #f1f1f5;
-                z-index: 2;
-            }
-
-            & .active a:after, & .active a:before {
-                background: #E8E8E8;
-            }
-
-            & li:first-child.active a:before,
-            & li:last-child.active a:after {
-                background: #f1f1f5;
-            }
-
-            & li a:before {
-                left: -20px;
-            }
-
-            & li a:after {
-                right: -20px;
-            }
-
-            & li:first-child:before {
-                width: 0;
-                height: 0;
-            }
-        }
 
         &__body {
             width: 100%;
@@ -241,6 +139,7 @@
                 button {
                     background-color: #3469F2;
                     color: #ffffff;
+
                     svg {
                         fill: #ffffff;
                     }

@@ -1,28 +1,19 @@
 <template>
     <div class="container">
-        <!--        <button>buttonList</button>-->
-        <control-panel></control-panel>
-        <!--        <div id="nav">-->
-        <!--            <router-link to="/">Home</router-link>-->
-        <!--            |-->
-        <!--            <router-link to="/about">About</router-link>-->
-        <!--        </div>-->
-        <!--        <router-view/>-->
-        <application-list></application-list>
+        <button-list></button-list>
+        <router-view></router-view>
     </div>
 </template>
 <script>
-    import ControlPanel from "./components/ControlPanel";
-    import ApplicationList from "./components/ApplicationList";
+    import ButtonList from "./components/ButtonList";
 
     export default {
         data() {
             return {}
         },
         components: {
-            ControlPanel,
-            ApplicationList
-        }
+            ButtonList,
+        },
     }
 </script>
 

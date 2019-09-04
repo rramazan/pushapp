@@ -1,25 +1,27 @@
 <template>
     <div class="application">
         <div class="application__list">
-            <div class="application__item" v-for="item in 3">
+            <div class="application__item" v-for="item in getCurrentAppsList.applications">
                 <div class="application__header">
-                    <div class="application__logo"></div>
+                    <div class="application__logo">
+                        <img :src="item.icon" alt="">
+                    </div>
                     <div class="header__info">
                         <div class="application__title">
-                            Тинькофф – Онлайн банк. Банк № 1 в России
+                            {{item.name | trimLength}}
                         </div>
                         <div class="application__subtitle">
                             <div class="subtitle__info subtitle__platform">
-                                <img src="../assets/svg/apple.svg" alt="apple">
-                                <span class="free">free</span>
+                                <img :src="require(`../assets/svg/${item.platform === 'android' ? item.platform: 'iphone' }.svg`)" alt="">
+                                <span class="free">{{item.price}}</span>
                             </div>
                             <div class="subtitle__info subtitle__rating">
                                 <img src="../assets/svg/star.svg" alt="apple">
-                                <span>4,8</span>
+                                <span>{{item.rating}}</span>
                             </div>
                             <div class="subtitle__info subtitle__location">
                                 <img src="../assets/svg/mark.svg" alt="mark">
-                                <span>RU</span>
+                                <span>{{item.location}}</span>
                             </div>
                         </div>
                     </div>
@@ -27,15 +29,15 @@
                 <div class="application__footer">
                     <div class="footer__item">
                         <div class="footer__text">ASO index</div>
-                        <div class="footer__title">7,8</div>
+                        <div class="footer__title">{{item.asoindex}}</div>
                     </div>
                     <div class="footer__item footer__item-middle">
                         <div class="footer__text">Установок за месяц</div>
-                        <div class="footer__title">135k.</div>
+                        <div class="footer__title">{{item.installations | roundInstallations}}</div>
                     </div>
                     <div class="footer__item">
                         <div class="footer__text">В категории</div>
-                        <div class="footer__title">3</div>
+                        <div class="footer__title">{{item.categoryPosition}}</div>
                     </div>
                 </div>
             </div>
@@ -44,8 +46,33 @@
 </template>
 
 <script>
+    import {mapGetters} from "vuex"
+
     export default {
-        name: "ApplicationList"
+        name: "ApplicationList",
+        computed: {
+            ...mapGetters(['getCurrentAppsList'])
+        },
+        filters: {
+            trimLength(value) {
+                if (value.length > 45) {
+                    return value.slice(0, 45) + '...';
+                } else {
+                    return value;
+                }
+            },
+            roundInstallations(value) {
+                if (value > 1000000) {
+                    return value.slice(0, 1) + 'kk';
+                } else if(value > 1000) {
+                    return value.slice(0, 1) + 'k'
+                } else if (value < 0) {
+                    return Math.round(value);
+                } else {
+                    return value;
+                }
+            }
+        },
     }
 </script>
 
@@ -80,9 +107,11 @@
         &__logo {
             width: 81px;
             height: 81px;
-            background-color: #F8BF25;
             border-radius: 10px;
             margin-right: 15px;
+            img {
+                width: 100%;
+            }
         }
 
         &__title {
