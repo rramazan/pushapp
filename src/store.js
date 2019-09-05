@@ -11,27 +11,34 @@ export default new Vuex.Store({
         currentAppsList: [],
         buttonList: [],
         mapApps: {},
-        currentFilter:{
-            platform: null,
-            rating: null,
-        },
-
+        applicationFilterList: {},
+        currentFilter: {
+            platform: 0,
+            rating: 0
+        }
     },
     getters: {
         getApps(state) {
             return state.apps;
         },
         getCurrentAppsList(state) {
-            let heroes = state.currentAppsList;
-            if (state.platform) {
-                heroes.applications = heroes.applications.filter((i) => {
-                    return i.platform === state.platform;
+            let heroes = {applications: []};
+            if (state.currentFilter.platform) {
+                state.currentAppsList.applications.map((i) => {
+                    if (state.currentFilter.platform < 0) {
+                        i.platform === 'android'? heroes.applications.push(i): '';
+                    } else {
+                        i.platform !== 'android'? heroes.applications.push(i): '';
+                    }
                 });
             }
-            if (state.rating) {
-                heroes.applications = heroes.applications.filter((i) => {
-                    return i.rating === state.rating;
-                });
+            // if (state.currentFilter.rating) {
+            //     heroes.applications = heroes.applications.filter((i) => {
+            //         return i.rating === state.rating;
+            //     });
+            // }
+            else {
+                heroes.applications = state.currentAppsList.applications;
             }
             return heroes;
         },
@@ -43,6 +50,12 @@ export default new Vuex.Store({
         },
         getMapApps(state) {
             return state.mapApps;
+        },
+        getCurrentFilter(state) {
+            return state.currentFilter;
+        },
+        getApplicationFilterList(state) {
+            return state.applicationFilterList;
         }
     },
     mutations: {
@@ -61,20 +74,38 @@ export default new Vuex.Store({
             for (let i in state.apps) {
                 state.mapApps[state.apps[i].name] = i;
             }
+        },
+        setCurrentFilter(state, filter) {
+            state.currentFilter = filter;
+        },
+        setApplicationFilterList(state) {
+            for (let i in state.apps) {
+                state.applicationFilterList[i] = {
+                    platform: 0,
+                    rating: 0
+                };
+            }
+        },
+        changeApplicationFilterList(state, options) {
+            Vue.set(state.applicationFilterList[options.name], 'platform', options.data.platform);
         }
     },
     actions: {
         init(context) {
-            if(!context.state.currentButton) {
+            if (!context.state.currentButton) {
                 context.commit('setMapApps');
                 context.commit('setButtonList');
                 context.commit('setCurrentButton', context.state.buttonList[1]);
                 context.commit('setCurrentAppsList', context.state.mapApps[context.state.buttonList[1]]);
+                context.commit('setApplicationFilterList');
             }
         },
         changeCurrentAppsList(context, item) {
             context.commit('setCurrentButton', item);
             context.commit('setCurrentAppsList', context.state.mapApps[item]);
+        },
+        changeCurrentFilter(context, item) {
+            context.commit('setCurrentFilter', item);
         }
     }
 })

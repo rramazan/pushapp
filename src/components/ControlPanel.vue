@@ -5,11 +5,11 @@
                 <div class="filters__filter filter">
                     <div class="filter__title">Фильтр</div>
                     <div class="filter__buttonGroup">
-                        <div :class="['filter__button', {'filter__button-active': filterButtonActive === 0}]">
-                            <button @click="filterButtonActive = 0">Все</button>
+                        <div :class="['filter__button', {'filter__button-active': getCurrentFilter.platform === 0}]">
+                            <button @click="changeFilter(0)">Все</button>
                         </div>
-                        <div :class="['filter__button', {'filter__button-active': filterButtonActive === 1}]">
-                            <button @click="filterButtonActive = 1">
+                        <div :class="['filter__button filter__button-middle', {'filter__button-active': getCurrentFilter.platform === 1}]">
+                            <button @click="changeFilter(1)">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#979898" width="15.891" height="19.445"
                                      viewBox="0 0 15.891 19.445">
                                     <g id="apple">
@@ -23,8 +23,8 @@
                                 </svg>
                             </button>
                         </div>
-                        <div :class="['filter__button', {'filter__button-active': filterButtonActive === -1}]">
-                            <button @click="filterButtonActive = -1">
+                        <div :class="['filter__button', {'filter__button-active': getCurrentFilter.platform === -1}]">
+                            <button @click="changeFilter(-1)">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#979898" width="17.861" height="21.108"
                                      viewBox="0 0 17.861 21.108">
                                     <g id="android">
@@ -73,6 +73,7 @@
 </template>
 
 <script>
+    import {mapMutations, mapGetters} from "vuex";
 
     export default {
         name: "ControlPanel",
@@ -82,7 +83,16 @@
                 selected: ''
             }
         },
-
+        computed: {
+            ...mapGetters(['getCurrentFilter'])
+        },
+        methods: {
+            ...mapMutations(['setCurrentFilter', 'changeApplicationFilterList']),
+            changeFilter(id) {
+                // this.filterButtonActive = id;
+                this.$root.$emit('changeAppFilter', id);
+            }
+        }
     }
 </script>
 
@@ -212,7 +222,9 @@
             z-index: 12;
             position: relative;
         }
-
+        .vs--open>.vs__dropdown-toggle {
+                border-radius: 10px 10px 0 0;
+        }
         .vs__dropdown-option {
             color: #979898;
             display: flex;
