@@ -59,9 +59,12 @@
                             :searchable="false"
                             class="style-chooser"
                             placeholder="Выбрать"
-                            :options="['от 4,0', 'от 3,0', 'от 2,0']"
+                            :options="['4,0', '3,0', '2,0']"
+                            @input="changeRating"
+                            :value="getCurrentFilter.rating"
                     >
                         <template slot="option" slot-scope="option">
+                            <span style="margin-right: 5px">от </span>
                             <span style="margin-right: 10px">{{option.label}}</span>
                             <img width="15px" height="16" src="../assets/svg/star.svg" alt="apple">
                         </template>
@@ -79,7 +82,6 @@
         name: "ControlPanel",
         data() {
             return {
-                filterButtonActive: 0,
                 selected: ''
             }
         },
@@ -89,8 +91,10 @@
         methods: {
             ...mapMutations(['setCurrentFilter', 'changeApplicationFilterList']),
             changeFilter(id) {
-                // this.filterButtonActive = id;
                 this.$root.$emit('changeAppFilter', id);
+            },
+            changeRating(id) {
+                this.$root.$emit('changeAppRating', id);
             }
         }
     }
@@ -222,9 +226,11 @@
             z-index: 12;
             position: relative;
         }
-        .vs--open>.vs__dropdown-toggle {
-                border-radius: 10px 10px 0 0;
+
+        .vs--open > .vs__dropdown-toggle {
+            border-radius: 10px 10px 0 0;
         }
+
         .vs__dropdown-option {
             color: #979898;
             display: flex;
@@ -233,7 +239,7 @@
 
         .vs__dropdown-option--highlight {
             color: #ffffff;
-
+            background-color: #3469F2;
         }
 
         .vs__clear,

@@ -14,7 +14,7 @@
         name: "Application",
         methods: {
             ...mapActions(['init', 'changeCurrentAppsList', 'changeCurrentFilter']),
-            ...mapMutations(['changeApplicationFilterList']),
+            ...mapMutations(['changeFilterPlatform', 'changeFilterList']),
         },
         computed: {
             ...mapGetters(['getButtonList', 'getMapApps', 'getApplicationFilterList'])
@@ -26,7 +26,10 @@
                 this.changeCurrentFilter(this.getApplicationFilterList[this.getMapApps[this.$route.params.id]]);
             }
             this.$root.$on('changeAppFilter', (id) => {
-                this.changeApplicationFilterList({name: this.getMapApps[this.$route.params.id], data: {platform: id, rating: null}})
+                this.changeFilterPlatform({name: this.getMapApps[this.$route.params.id], platform: id})
+            })
+            this.$root.$on('changeAppRating', (id) => {
+                this.changeFilterList({name: this.getMapApps[this.$route.params.id], rating: id})
             })
         },
         components: {

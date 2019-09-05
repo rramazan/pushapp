@@ -32,11 +32,11 @@ export default new Vuex.Store({
                     }
                 });
             }
-            // if (state.currentFilter.rating) {
-            //     heroes.applications = heroes.applications.filter((i) => {
-            //         return i.rating === state.rating;
-            //     });
-            // }
+            if (state.currentFilter.rating) {
+                state.currentAppsList.applications.map((i) => {
+                    parseInt(i.rating) === parseInt(state.currentFilter.rating) ? heroes.applications.push(i): '';
+                });
+            }
             else {
                 heroes.applications = state.currentAppsList.applications;
             }
@@ -86,9 +86,12 @@ export default new Vuex.Store({
                 };
             }
         },
-        changeApplicationFilterList(state, options) {
-            Vue.set(state.applicationFilterList[options.name], 'platform', options.data.platform);
-        }
+        changeFilterPlatform(state, options) {
+            Vue.set(state.applicationFilterList[options.name], 'platform', options.platform);
+        },
+        changeFilterList(state, options) {
+            Vue.set(state.applicationFilterList[options.name], 'rating', options.rating);
+        },
     },
     actions: {
         init(context) {

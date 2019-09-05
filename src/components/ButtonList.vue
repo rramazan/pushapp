@@ -27,7 +27,6 @@
         font-family: MuseoSansCyrl-500, sans-serif;
         display: flex;
         list-style: none;
-        width: 660px;
 
         & li {
             display: flex;

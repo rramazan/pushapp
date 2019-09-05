@@ -84,6 +84,9 @@
             display: flex;
             flex-wrap: wrap;
             margin: 0 -7px;
+            @media only screen  and (max-width: 900px) {
+                margin: 0;
+            }
         }
 
         &__item {
@@ -94,6 +97,9 @@
             background-color: #fff;
             border-radius: 10px;
             box-sizing: border-box;
+            @media only screen  and (max-width: 750px) {
+                width: 100%;
+            }
         }
 
         &__header {
